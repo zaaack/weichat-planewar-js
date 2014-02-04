@@ -26,11 +26,13 @@ var Main={
 	_render_t:null,
 	_render:function(){
 		this._render_t=setInterval(function(){
+			//渲染敌机
 			var enemys=enemyPlaneFactory.enemys;
 			for(var i in enemys){
 				var enemy=enemys[i];
 				enemy.move(0,enemy.speed);
 				
+				//判断自己是否被敌机击中
 				if(enemy.x+enemy.e.width>selfPlane.x+10
 					&&enemy.x<selfPlane.x+selfPlane.e.width-10
 					&&enemy.y+enemy.e.height>selfPlane.y+selfPlane.e.height/2
@@ -44,11 +46,13 @@ var Main={
 						}
 				}
 				
+				//判断敌机是否已经消失或者已死
 				if(enemy.y>Util.windowHeight||enemy.isDied){
 					enemy.restore();
 				}
 			}
 			
+			//渲染子弹
 			var bullets=bulletFactory.bullets;
 			for(var i in bullets){
 				var bullet=bullets[i];
@@ -62,7 +66,7 @@ var Main={
 						&&bullet.x<enemy.x+enemy.e.width
 						&&bullet.y<enemy.y+enemy.e.height){
 							enemy.isDied=true;
-							bullet.e.style.top=-bullet.e.height;
+							bullet.moveTo(0,-bullet.e.height);
 							selfPlane.score+=50;
 							Util.scoreSpan.innerHTML=selfPlane.score+"";
 					}
